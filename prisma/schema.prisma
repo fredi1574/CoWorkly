@@ -23,6 +23,7 @@ model User {
   image          String?
   accounts       Account[]
   sessions       Session[]
+  createdRooms   Room[]    @relation("RoomCreator")
 }
 
 model Account {
@@ -31,8 +32,7 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -43,4 +43,12 @@ model Session {
   userId       String
   expires      DateTime
   User         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Room {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  creatorId String
+  creator   User     @relation("RoomCreator", fields: [creatorId], references: [id], onDelete: Cascade)
 }
