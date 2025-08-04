@@ -104,9 +104,15 @@ app.prepare().then(() => {
       });
     };
 
+    const onClearCanvas = (roomId: string) => {
+      drawingHistory[roomId] = []; // Removes all drawing history
+      io.to(roomId).emit("canvas-clear"); // Broadcast the whole room the clear event
+    };
+
     socket.on("join-room", onJoinRoom);
     socket.on("client-draw", onClientDraw);
     socket.on("cursor-move", onCursorMove);
+    socket.on("clear-canvas", onClearCanvas);
     socket.on("disconnecting", onDisconnecting);
   });
 

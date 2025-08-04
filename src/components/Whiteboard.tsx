@@ -100,9 +100,18 @@ export function Whiteboard({ socket, roomId }: WhiteboardProps) {
     const handleCursors = (roomCursors: Record<string, CursorData>) =>
       setCursors(roomCursors);
 
+    const handleClearCanvas = () => {
+      const canvas = canvasRef.current;
+      const context = contextRef.current;
+      if (canvas && context) {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    };
+
     socket.on("server-draw", handleDraw);
     socket.on("drawing-history", handleHistory);
     socket.on("update-cursors", handleCursors);
+    socket.on("canvas-clear", handleClearCanvas);
 
     // Redraw on resize to maintain quality
     const handleResize = () =>
@@ -115,6 +124,7 @@ export function Whiteboard({ socket, roomId }: WhiteboardProps) {
       socket.off("server-draw", handleDraw);
       socket.off("drawing-history", handleHistory);
       socket.off("update-cursors", handleCursors);
+      socket.off("canvas-clear", handleClearCanvas);
       window.removeEventListener("resize", handleResize);
     };
   }, [socket, roomId]);
@@ -166,36 +176,49 @@ export function Whiteboard({ socket, roomId }: WhiteboardProps) {
     lastPointRef.current = { x: offsetX, y: offsetY };
   };
 
+  // Trigger clear-canvas event in the server
+  const handleClearAll = () => {
+    socket?.emit("clear-canvas", roomId);
+  };
+
   return (
     <div className="flex h-full w-full flex-col">
       {/* Toolbar */}
-      <div className="flex items-center gap-4 border-b bg-gray-100 p-2">
+      <div className="flex items-center justify-between gap-4 border-b bg-gray-100 p-2">
+        <div className="flex items-center gap-2">
+          <Button
+            onClick={() => setTool("draw")}
+            className={`${tool === "draw" ? "bg-gray-600 text-white" : ""}`}
+          >
+            Pen
+          </Button>
+          <Button
+            onClick={() => setTool("erase")}
+            className={`${tool === "erase" ? "bg-gray-600 text-white" : ""}`}
+          >
+            Eraser
+          </Button>
+          <input
+            type="color"
+            value={color}
+            onChange={(e) => setColor(e.target.value)}
+            className="h-10 w-10"
+          />
+          <input
+            type="range"
+            min="1"
+            max="100"
+            value={lineWidth}
+            onChange={(e) => setLineWidth(Number(e.target.value))}
+          />
+          <span>{lineWidth}px</span>
+        </div>
         <Button
-          onClick={() => setTool("draw")}
-          variant={tool === "draw" ? "secondary" : "ghost"}
+          className="hover:bg-red-600 hover:text-white"
+          onClick={handleClearAll}
         >
-          Pen
+          Clear
         </Button>
-        <Button
-          onClick={() => setTool("erase")}
-          variant={tool === "erase" ? "secondary" : "ghost"}
-        >
-          Eraser
-        </Button>
-        <input
-          type="color"
-          value={color}
-          onChange={(e) => setColor(e.target.value)}
-          className="h-8 w-8"
-        />
-        <input
-          type="range"
-          min="1"
-          max="50"
-          value={lineWidth}
-          onChange={(e) => setLineWidth(Number(e.target.value))}
-        />
-        <span>{lineWidth}px</span>
       </div>
 
       {/* Canvas Area */}
@@ -204,7 +227,6 @@ export function Whiteboard({ socket, roomId }: WhiteboardProps) {
           ref={canvasRef}
           onMouseDown={startDrawing}
           onMouseUp={stopDrawing}
-          onMouseLeave={stopDrawing}
           onMouseMove={draw}
           className="absolute top-0 left-0 h-full w-full rounded-b-lg bg-white"
         />
