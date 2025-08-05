@@ -9,3 +9,24 @@ export type NextApiResponseServerIo = NextApiResponse & {
     };
   };
 };
+
+export interface DrawData {
+  x0: number;
+  y0: number;
+  x1: number;
+  y1: number;
+  color: string;
+  lineWidth: number;
+  mode: "draw" | "erase";
+}
+
+export interface CursorData {
+  x: number;
+  y: number;
+  userName: string;
+}
+
+export interface Room {
+  id: string;
+  participants: Record<string, { userName: string }>;
+}
