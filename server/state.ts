@@ -3,6 +3,7 @@ import { CursorData, DrawData } from "@/types";
 interface RoomState {
   participants: Record<string, { userName: string }>;
   drawingHistory: DrawData[];
+  code: string;
   cursorPositions: Record<string, CursorData>;
 }
 
@@ -14,6 +15,7 @@ export function getRoom(roomId: string): RoomState {
     roomState[roomId] = {
       participants: {},
       drawingHistory: [],
+      code: `// Welcome to your collaborative code editor!\n// Start typing here.`,
       cursorPositions: {},
     };
   }
@@ -55,6 +57,11 @@ export function addDrawDataToHistory(roomId: string, data: DrawData) {
 export function clearDrawingHistory(roomId: string) {
   const room = getRoom(roomId);
   room.drawingHistory = [];
+}
+
+export function updateCode(roomId: string, newCode: string) {
+  const room = getRoom(roomId);
+  room.code = newCode;
 }
 
 export function updateUserCursor(
