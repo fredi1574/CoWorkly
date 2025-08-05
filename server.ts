@@ -1,5 +1,3 @@
-// In /server.ts
-
 import { createServer } from "http";
 import next from "next";
 import { Server, Socket } from "socket.io";
@@ -106,7 +104,7 @@ app.prepare().then(() => {
 
     const onClearCanvas = (roomId: string) => {
       drawingHistory[roomId] = []; // Removes all drawing history
-      io.to(roomId).emit("canvas-clear"); // Broadcast the whole room the clear event
+      io.to(roomId).emit("clear-canvas"); // Broadcast the whole room the clear event
     };
 
     socket.on("join-room", onJoinRoom);
