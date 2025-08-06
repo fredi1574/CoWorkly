@@ -11,27 +11,23 @@ export default function SignInPage() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     setIsLoading(true);
     setError(null);
 
     try {
-      // Use the signIn function from next-auth
       const result = await signIn("credentials", {
-        redirect: false, // We handle redirection manually
-        email,
+        redirect: false,
+        email: email.toLowerCase(),
         password,
       });
 
       if (result?.error) {
-        // If signIn returns an error, display it
         setError("Invalid email or password. Please try again.");
         setIsLoading(false);
       } else if (result?.ok) {
-        // If signIn is successful, redirect to the main page
         router.push("/");
-        router.refresh(); // Refresh the page to update session state
       }
     } catch (error) {
       setError("An unexpected error occurred.");
