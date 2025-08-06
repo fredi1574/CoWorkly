@@ -29,11 +29,13 @@ export default function CodeEditor() {
     socket.on("code-history", handleCodeHistory);
     socket.on("server-code-change", handleCodeChange);
 
+    socket.emit("get-code-history", room.id);
+
     return () => {
       socket.off("code-history", handleCodeHistory);
       socket.off("server-code-change", handleCodeChange);
     };
-  }, [socket]);
+  }, [socket, room.id]);
 
   const onChange = useCallback(
     (value: string) => {

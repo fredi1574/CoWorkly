@@ -12,9 +12,6 @@ export function registerRoomHandlers(io: Server, socket: Socket) {
     // Send drawing history to the new user
     socket.emit("drawing-history", room.drawingHistory);
 
-    // Send the current code to the new user
-    socket.emit("code-history", room.code);
-
     // Notify everyone in the room about the updated participants list
     io.to(roomId).emit(
       "update-participants",
