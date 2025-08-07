@@ -20,12 +20,12 @@ export default function ExitRoomButton() {
       onClick={handleLeaveRoom}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="rounded-md bg-red-500 px-4 py-2 font-medium text-white hover:bg-red-700 focus:outline-none active:bg-red-600"
+      className="rounded-md bg-red-500 px-4 py-2 text-xs text-white hover:bg-red-700 focus:outline-none active:bg-red-600"
     >
       {hovered ? (
-        <DoorOpen className="mr-1 h-4 w-4" />
+        <DoorOpen className="mr-1 h-2 w-2" />
       ) : (
-        <DoorClosed className="mr-1 h-4 w-4" />
+        <DoorClosed className="mr-1 h-2 w-2" />
       )}
       Leave Room
     </Button>

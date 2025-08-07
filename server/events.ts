@@ -19,6 +19,8 @@ export function registerRoomHandlers(io: Server, socket: Socket) {
         (participant) => participant.userName,
       ),
     );
+
+    io.emit("room-updated", { roomId, participants: room.participants });
   };
 
   const handleUserLeaving = (roomId: string) => {
@@ -35,6 +37,8 @@ export function registerRoomHandlers(io: Server, socket: Socket) {
         ),
       );
       io.to(roomId).emit("update-cursors", room.cursorPositions);
+
+      io.emit("room-updated", { roomId, participants: room.participants });
     }
   };
 

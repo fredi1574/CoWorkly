@@ -54,10 +54,7 @@ export default function CodeEditor() {
 
   return (
     <div className="flex h-full w-full flex-col">
-      <div className="flex-shrink-0 rounded-t-lg border-b bg-gray-100 p-2">
-        <h3 className="text-sm font-semibold">Shared Code Editor</h3>
-      </div>
-      <div className="relative flex-1 overflow-auto">
+      <div className="relative flex-1 overflow-auto rounded-lg">
         <CodeMirror
           value={code}
           height="100%"

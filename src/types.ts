@@ -28,5 +28,11 @@ export interface CursorData {
 
 export interface Room {
   id: string;
+  name: string;
   participants: Record<string, { userName: string }>;
+  createdAt: string;
+  creator: {
+    name: string;
+    email: string;
+  };
 }
