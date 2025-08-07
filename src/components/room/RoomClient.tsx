@@ -8,6 +8,11 @@ import { Whiteboard } from "./whiteboard/Whiteboard";
 import { RoomProvider } from "@/context/RoomContext";
 import CodeEditor from "./codeEditor/CodeEditor";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "../ui/resizable";
 
 interface RoomClientProps {
   room: Room;
@@ -45,43 +50,49 @@ export function RoomClient({ room, user }: RoomClientProps) {
 
   return (
     <RoomProvider room={room} user={user}>
-      <div className="flex h-screen flex-col bg-gray-100 dark:bg-gray-900">
+      <div className="flex h-screen flex-col bg-gray-700">
         <RoomHeader />
 
-        <div className="flex flex-1">
-          {/* Main section for the code editor and whiteboard */}
-          <main className="flex flex-1 gap-2 p-2">
-            <Tabs defaultValue="code" className="w-full">
-              <TabsList>
-                <TabsTrigger value="code">Code</TabsTrigger>
-                <TabsTrigger value="whiteboard">Whiteboard</TabsTrigger>
-              </TabsList>
-              <TabsContent className="w-full" value="whiteboard">
-                <Whiteboard />
-              </TabsContent>
-              <TabsContent className="w-full" value="code">
-                <CodeEditor />
-              </TabsContent>
-            </Tabs>
-          </main>
+        <ResizablePanelGroup direction="horizontal" className="">
+          <ResizablePanel defaultSize={75}>
+            {/* Main section for the code editor and whiteboard */}
+            <main className="ml-2 h-full">
+              <Tabs defaultValue="code" className="h-full">
+                <TabsList className="mx-auto">
+                  <TabsTrigger value="code">Code</TabsTrigger>
+                  <TabsTrigger value="whiteboard">Whiteboard</TabsTrigger>
+                </TabsList>
+                <TabsContent value="whiteboard" className="mb-1">
+                  <Whiteboard />
+                </TabsContent>
+                <TabsContent value="code" className="mb-1">
+                  <CodeEditor />
+                </TabsContent>
+              </Tabs>
+            </main>
+          </ResizablePanel>
 
-          {/* Secondary section for the chat and participants or video call */}
-          <section>
-            <Tabs defaultValue="chat" className="w-full">
-              <TabsList>
+          <ResizableHandle withHandle className="px-1.5" />
+
+          <ResizablePanel defaultSize={25}>
+            {/* Secondary section for the chat and participants or video call */}
+            <Tabs defaultValue="chat" className="h-full">
+              <TabsList className="mx-auto">
                 <TabsTrigger value="chat">Chat</TabsTrigger>
-                <TabsTrigger value="participants">Participants</TabsTrigger>
+                <TabsTrigger value="call">Call</TabsTrigger>
               </TabsList>
-              <TabsContent value="chat">
-                <h1>Chat</h1>
+              <TabsContent value="chat" className="mb-1 rounded-md bg-white">
+                <h1 className="text-center text-2xl">Chat</h1>
               </TabsContent>
-              <TabsContent value="participants">
-                <h1>Participants</h1>
+              <TabsContent value="call" className="mb-1 rounded-md bg-white">
+                <h1 className="text-center text-2xl">Video/Audio Call</h1>
               </TabsContent>
             </Tabs>
-          </section>
-        </div>
+            {/* </section> */}
+          </ResizablePanel>
+        </ResizablePanelGroup>
       </div>
+      {/* </div> */}
     </RoomProvider>
   );
 }
