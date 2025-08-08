@@ -1,6 +1,7 @@
 import { createServer } from "http";
 import next from "next";
 import { Server } from "socket.io";
+import { registerChatHandlers } from "./server/ChatEvents";
 import { registerCodeEditorHandlers } from "./server/codeEditorEvents";
 import { registerRoomHandlers } from "./server/events";
 import { registerWhiteboardHandlers } from "./server/whiteboardEvents";
@@ -22,6 +23,7 @@ app.prepare().then(() => {
     registerRoomHandlers(io, socket);
     registerWhiteboardHandlers(io, socket);
     registerCodeEditorHandlers(io, socket);
+    registerChatHandlers(io, socket);
 
     socket.on("disconnect", () => {
       console.log(`Client disconnected: ${socket.id}`);

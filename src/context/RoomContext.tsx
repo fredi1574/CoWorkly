@@ -15,6 +15,7 @@ interface RoomContextState {
   socket: Socket | null;
   room: Room;
   participants: string[];
+  user: User;
 }
 
 const RoomContext = createContext<RoomContextState | null>(null);
@@ -70,6 +71,7 @@ export function RoomProvider({ children, room, user }: RoomProviderProps) {
     socket: socketRef.current,
     room,
     participants,
+    user,
   };
 
   return <RoomContext.Provider value={value}>{children}</RoomContext.Provider>;

@@ -1,18 +1,19 @@
 "use client";
+import { RoomProvider } from "@/context/RoomContext";
 import { type Room } from "@/generated/prisma";
 import { type User } from "next-auth";
 import { useEffect, useRef, useState } from "react";
 import { io, type Socket } from "socket.io-client";
-import RoomHeader from "./RoomHeader";
-import { Whiteboard } from "./whiteboard/Whiteboard";
-import { RoomProvider } from "@/context/RoomContext";
-import CodeEditor from "./codeEditor/CodeEditor";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from "../ui/resizable";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { Chat } from "./chat/Chat";
+import CodeEditor from "./codeEditor/CodeEditor";
+import RoomHeader from "./RoomHeader";
+import { Whiteboard } from "./whiteboard/Whiteboard";
 
 interface RoomClientProps {
   room: Room;
@@ -82,7 +83,7 @@ export function RoomClient({ room, user }: RoomClientProps) {
                 <TabsTrigger value="call">Call</TabsTrigger>
               </TabsList>
               <TabsContent value="chat" className="mb-1 rounded-md bg-white">
-                <h1 className="text-center text-2xl">Chat</h1>
+                <Chat />
               </TabsContent>
               <TabsContent value="call" className="mb-1 rounded-md bg-white">
                 <h1 className="text-center text-2xl">Video/Audio Call</h1>
