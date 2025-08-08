@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { ToolState } from "@/hooks/useWhiteboard";
-import { Eraser, Pencil } from "lucide-react";
+import { Circle, Eraser, Minus, Pencil, Square } from "lucide-react";
 
 interface WhiteboardToolbarProps {
   toolState: ToolState;
-  setTool: (tool: "draw" | "erase") => void;
+  setTool: (tool: "draw" | "erase" | "rectangle" | "circle" | "line") => void;
   setColor: (color: string) => void;
   setLineWidth: (lineWidth: number) => void;
   handleClearAll: () => void;
@@ -34,6 +34,24 @@ export function WhiteboardToolbar({
         >
           <Eraser className="h-4 w-4" />
           Eraser
+        </Button>
+        <Button
+          onClick={() => setTool("rectangle")}
+          className={`${tool === "rectangle" ? "bg-gray-400 text-white" : ""}`}
+        >
+          <Square className="h-4 w-4" />
+        </Button>
+        <Button
+          onClick={() => setTool("circle")}
+          className={`${tool === "circle" ? "bg-gray-400 text-white" : ""}`}
+        >
+          <Circle className="h-4 w-4" />
+        </Button>
+        <Button
+          onClick={() => setTool("line")}
+          className={`${tool === "line" ? "bg-gray-400 text-white" : ""}`}
+        >
+          <Minus className="h-4 w-4" />
         </Button>
         <input
           type="color"

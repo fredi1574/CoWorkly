@@ -45,7 +45,6 @@ export function removeUserFromRoom(
   const { userName } = room.participants[socketId];
   delete room.participants[socketId];
   delete room.cursorPositions[socketId];
-
   return { userName };
 }
 

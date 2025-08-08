@@ -17,7 +17,7 @@ export interface DrawData {
   y1: number;
   color: string;
   lineWidth: number;
-  mode: "draw" | "erase";
+  mode: "draw" | "erase" | "rectangle" | "circle" | "line";
 }
 
 export interface CursorData {
@@ -35,4 +35,11 @@ export interface Room {
     name: string;
     email: string;
   };
+}
+
+export interface ChatMessage {
+  id: string;
+  text: string;
+  sender: string;
+  timestamp: string;
 }
