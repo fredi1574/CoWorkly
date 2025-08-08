@@ -23,6 +23,7 @@ export default function RoomHeader() {
           >
             <div className="flex items-center gap-2 p-2">
               <Users className="h-4 w-4" />
+              <p className="font-semibold">{participants.length}</p>
               Participants
             </div>
           </HoverCardTrigger>
